@@ -1,0 +1,20 @@
+{
+    "name": "hope/util",
+    "description": "Hope View engine",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Shvorak Alexey",
+            "email": "dr.emerido@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+      "codeception/codeception": "~2.0"
+    },
+    "autoload": {
+      "psr-4": {
+        "Hope\\Util" : "dist/"
+      }
+    }
+}
