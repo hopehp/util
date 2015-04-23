@@ -45,6 +45,17 @@ namespace Hope\Util
             return $this->_value;
         }
 
+
+        /**
+         * Returns the number of string bytes
+         *
+         * @return int
+         */
+        public function bytes()
+        {
+            return mb_strlen($this->_value, '8bit');
+        }
+
         /**
          * Returns string length
          *
