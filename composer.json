@@ -1,6 +1,6 @@
 {
     "name": "hope/util",
-    "description": "Hope View engine",
+    "description": "Hope Framework utilities",
     "license": "MIT",
     "authors": [
         {
@@ -12,11 +12,12 @@
       "php": ">=5.6"
     },
     "require-dev": {
-      "codeception/codeception": "~2.0"
+      "phpunit/phpunit": "4.6.*"
     },
     "autoload": {
       "psr-4": {
         "Hope\\Util\\" : "dist/"
-      }
+      },
+      "files": ["functions.php"]
     }
 }

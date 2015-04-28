@@ -10,7 +10,7 @@ namespace Hope\Util
      *
      * @package Hope\Util
      */
-    class Map implements Countable
+    class Map implements Countable, \ArrayAccess
     {
 
         /**
@@ -99,7 +99,8 @@ namespace Hope\Util
          */
         public function sort(callable $callable)
         {
-            usort($this->_items, $callable);
+            uksort($this->_items, $callable);
+
             return $this;
         }
 
@@ -190,9 +191,47 @@ namespace Hope\Util
         }
 
         /**
+         * Concat map values
+         *
+         * @param string|callable $delimiter
+         *
+         * @return string
+         */
+        public function concat($delimiter)
+        {
+            $result = '';
+
+            if (is_string($delimiter)) {
+                $result = implode($delimiter, $this->all());
+            } else if (is_callable($delimiter)) {
+                foreach ($this->all() as $key => $value) {
+                    $result = call_user_func($delimiter, $result, $value, $key);
+                }
+            }
+            return $result;
+        }
+
+        /**
+         * Merge two maps
+         *
+         * @param \Hope\Util\Map $map
+         * @param bool           $recursive [optional]
+         *
+         * @return \Hope\Util\Map
+         */
+        public function merge(Map $map, $recursive = false)
+        {
+            $this->_items = $recursive
+                ? array_merge_recursive($this->_items, $map->all())
+                : array_merge($this->_items, $map->all())
+            ;
+            return $this;
+        }
+
+        /**
          * Returns first item from map
          *
-         * @return null
+         * @return mixed|null
          */
         public function first()
         {
@@ -209,7 +248,6 @@ namespace Hope\Util
             return end($this->_items);
         }
 
-
         /**
          * Return new copy of this Map instance
          *
@@ -219,6 +257,39 @@ namespace Hope\Util
         {
             return new static($this->all());
         }
+
+        /**
+         * {@inheritdoc}
+         */
+        public function offsetExists($offset)
+        {
+            return $this->exists($offset);
+        }
+
+        /**
+         * {@inheritdoc}
+         */
+        public function offsetGet($offset)
+        {
+            return $this->get($offset);
+        }
+
+        /**
+         * {@inheritdoc}
+         */
+        public function offsetSet($offset, $value)
+        {
+            $this->set($offset, $value);
+        }
+
+        /**
+         * {@inheritdoc}
+         */
+        public function offsetUnset($offset)
+        {
+            $this->remove($offset);
+        }
+
     }
 
 }
