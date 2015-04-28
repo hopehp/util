@@ -59,15 +59,16 @@ namespace Hope\Util
          * Returns map value
          *
          * @param mixed $name
+         * @param bool  $default [optional] Default value that returned if key not existing
          *
-         * @return mixed|bool
+         * @return bool|mixed
          */
-        public function get($name)
+        public function get($name, $default = false)
         {
             if (isset($this->_items[$name])) {
                 return $this->_items[$name];
             }
-            return false;
+            return $default;
         }
 
         /**
