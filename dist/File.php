@@ -49,18 +49,12 @@ namespace Hope\Util
         /**
          * Construct file instance
          *
-         * @param string $path
+         * @param string $path [optional]
          */
-        public function __construct($path)
+        public function __construct($path = null)
         {
-            if (file_exists($path)) {
-                $this->_path = $path;
-
-                // Detect information
-                if ($info = pathinfo($path)) {
-                    $this->_name = $info['filename'];
-                    $this->_ext = $info['extension'];
-                }
+            if ($path) {
+                $this->setPath($path);
             }
         }
 
@@ -101,9 +95,15 @@ namespace Hope\Util
          */
         public function move($to)
         {
-            if ($result = rename($this->_path, $to)) {
+            if ($this->isUploaded()) {
+                $result = move_uploaded_file($this->_path, $to);
+            } else if ($result = rename($this->_path, $to)) {
                 $this->_path = $to;
             }
+            if ($result) {
+                $this->setPath($to);
+            }
+
             return $result;
         }
 
@@ -117,6 +117,25 @@ namespace Hope\Util
         public function save($to = null)
         {
 
+        }
+
+        /**
+         * Set new file path
+         *
+         * @param string $path
+         *
+         * @return \Hope\Util\File
+         */
+        public function setPath($path)
+        {
+            $this->_path = $path;
+            // Detect information
+            if ($info = pathinfo($path)) {
+                $this->_name = $info['filename'];
+                $this->_ext = $info['extension'];
+            }
+
+            return $this;
         }
 
         /**
@@ -147,6 +166,16 @@ namespace Hope\Util
         public function isLink()
         {
             return is_link($this->_path);
+        }
+
+        /**
+         * Checks if path is uploaded
+         *
+         * @return bool
+         */
+        public function isUploaded()
+        {
+            return is_uploaded_file($this->_path);
         }
 
         /**
@@ -198,10 +227,24 @@ namespace Hope\Util
          */
         public function getMime($check = false)
         {
-            if (null === $this->_mime) {
-                $this->_mime;
+            if ($this->_mime === null) {
+                // TODO : Add checking by content
+                $this->_mime = Mime::getMime($this->_ext);
             }
             return $this->_mime;
+        }
+
+        /**
+         * Returns file data
+         *
+         * @return string|null
+         */
+        public function getData()
+        {
+            if ($this->_data === null && $this->exists() && $this->isReadable()) {
+                $this->_data = file_get_contents($this->_path);
+            }
+            return $this->_data;
         }
 
     }

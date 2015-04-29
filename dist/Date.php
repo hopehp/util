@@ -76,6 +76,42 @@ namespace Hope\Util
         }
 
         /**
+         * Add time to date
+         *
+         * @param \DateInterval|int $interval
+         *
+         * @return \Hope\Util\Date
+         */
+        public function add($interval)
+        {
+            if ($interval instanceof \DateInterval) {
+                parent::add($interval);
+            } else if (is_integer($interval)) {
+                $this->setTimestamp($this->getTimestamp() + $interval);
+            }
+
+            return $this;
+        }
+
+        /**
+         * Sub time from date
+         *
+         * @param \DateInterval|int $interval
+         *
+         * @return \Hope\Util\Date
+         */
+        public function sub($interval)
+        {
+            if ($interval instanceof \DateInterval) {
+                parent::sub($interval);
+            } else if (is_integer($interval)) {
+                $this->setTimestamp($this->getTimestamp() - $interval);
+            }
+
+            return $this;
+        }
+
+        /**
          * @inheritdoc
          *
          * @param DateTime $datetime2
@@ -102,42 +138,6 @@ namespace Hope\Util
         public function copy()
         {
             return new static($this->getTimestamp());
-        }
-
-        /**
-         * Subtract days
-         *
-         * @param int $d
-         *
-         * @return Date
-         */
-        public function subDays($d = 1)
-        {
-            return $this->setTimestamp($this->getTimestamp() - ($d * Date::DAY));
-        }
-
-        /**
-         * Subtract hours
-         *
-         * @param int $h
-         *
-         * @return Date
-         */
-        public function subHours($h = 1)
-        {
-            return $this->setTimestamp($this->getTimestamp() - ($h * Date::HOUR));
-        }
-
-        /**
-         * Subtract minutes
-         *
-         * @param int $m
-         *
-         * @return Date
-         */
-        public function subMinutes($m = 1)
-        {
-            return $this->setTimestamp($this->getTimestamp() - ($m * Date::MINUTE));
         }
 
         /**
