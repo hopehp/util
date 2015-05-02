@@ -34,7 +34,7 @@ namespace Hope\Util
          *
          * @return string
          */
-        public static function toSnackCase($string)
+        public static function toSnakeCase($string)
         {
             $string = preg_replace('/([a-z\d])([A-Z])/', '\1_\2', strval($string));
             $string = preg_replace('/([A-Z]+)([A-Z])/', '\1_\2', $string);
