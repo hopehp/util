@@ -106,6 +106,30 @@ namespace Hope\Util
         }
 
         /**
+         * Fill dict items
+         *
+         * @param \Hope\Util\Dict|array $values
+         *
+         * @throws \Hope\Core\Error
+         *
+         * @return \Hope\Util\Dict
+         */
+        public function fill($values)
+        {
+            if ($values instanceof Dict) {
+                $values = $values->all();
+            }
+
+            foreach($values as $key => $value) {
+                if (false === array_key_exists($key, $this->_items)) {
+                    $this->set($key, $value);
+                }
+            }
+
+            return $this;
+        }
+
+        /**
          * Find key name by value
          *
          * @param mixed $value
