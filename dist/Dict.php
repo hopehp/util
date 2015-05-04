@@ -6,22 +6,22 @@ namespace Hope\Util
     use Hope\Core\Error;
 
     /**
-     * Class Map
+     * Class Dict
      *
      * @package Hope\Util
      */
-    class Map implements Countable, \ArrayAccess
+    class Dict implements Countable, \ArrayAccess
     {
 
         /**
-         * Map values
+         * Dict values
          *
          * @var array
          */
         protected $_items = [];
 
         /**
-         * Create Map
+         * Create Dict
          *
          * @param array $values
          *
@@ -42,12 +42,12 @@ namespace Hope\Util
          *
          * @throws \Hope\Core\Error
          *
-         * @return \Hope\Util\Map
+         * @return \Hope\Util\Dict
          */
         public function set($name, $item)
         {
             if (false === is_string($name) && false === is_object($name)) {
-                throw new Error('Map key name must be a string or object');
+                throw new Error('Dict key name must be a string or object');
             }
             $this->_items[$name] = $item;
 
@@ -96,7 +96,7 @@ namespace Hope\Util
          *
          * @param callable $callable
          *
-         * @return \Hope\Util\Map
+         * @return \Hope\Util\Dict
          */
         public function sort(callable $callable)
         {
@@ -142,7 +142,7 @@ namespace Hope\Util
         /**
          * Clear map
          *
-         * @return \Hope\Util\Map
+         * @return \Hope\Util\Dict
          */
         public function clear()
         {
@@ -167,7 +167,7 @@ namespace Hope\Util
          *
          * @param mixed $name
          *
-         * @return \Hope\Util\Map
+         * @return \Hope\Util\Dict
          */
         public function remove($name)
         {
@@ -180,11 +180,11 @@ namespace Hope\Util
         }
 
         /**
-         * Filter current map items and return new Map instance
+         * Filter current map items and return new Dict instance
          *
          * @param callable $filter
          *
-         * @return \Hope\Util\Map
+         * @return \Hope\Util\Dict
          */
         public function filter(callable $filter)
         {
@@ -215,12 +215,12 @@ namespace Hope\Util
         /**
          * Merge two maps
          *
-         * @param \Hope\Util\Map $map
+         * @param \Hope\Util\Dict $map
          * @param bool           $recursive [optional]
          *
-         * @return \Hope\Util\Map
+         * @return \Hope\Util\Dict
          */
-        public function merge(Map $map, $recursive = false)
+        public function merge(Dict $map, $recursive = false)
         {
             $this->_items = $recursive
                 ? array_merge_recursive($this->_items, $map->all())
@@ -250,9 +250,9 @@ namespace Hope\Util
         }
 
         /**
-         * Return new copy of this Map instance
+         * Return new copy of this Dict instance
          *
-         * @return \Hope\Util\Map
+         * @return \Hope\Util\Dict
          */
         public function copy()
         {

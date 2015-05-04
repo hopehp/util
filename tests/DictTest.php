@@ -1,10 +1,10 @@
 <?php
 
 
-class MapTest extends PHPUnit_Framework_TestCase
+class DictTest extends PHPUnit_Framework_TestCase
 {
 
-    /** @var \Hope\Util\Map  */
+    /** @var \Hope\Util\Dict  */
     protected $map;
 
     protected $values = [
@@ -16,7 +16,7 @@ class MapTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->map = new \Hope\Util\Map($this->values);
+        $this->map = new \Hope\Util\Dict($this->values);
     }
 
     /**
@@ -118,8 +118,8 @@ class MapTest extends PHPUnit_Framework_TestCase
                 'four' => 4
             ]
         ];
-        $map1 = new \Hope\Util\Map($arr1);
-        $map2 = new \Hope\Util\Map($arr2);
+        $map1 = new \Hope\Util\Dict($arr1);
+        $map2 = new \Hope\Util\Dict($arr2);
 
         $map1->merge($map2);
 
@@ -175,7 +175,7 @@ class MapTest extends PHPUnit_Framework_TestCase
     {
         $copy = $this->map->copy();
 
-        $this->assertTrue($copy instanceof \Hope\Util\Map);
+        $this->assertTrue($copy instanceof \Hope\Util\Dict);
         $this->assertTrue($copy !== $this->map);
 
         $this->assertEquals($this->map->all(), $copy->all());

@@ -28,7 +28,7 @@ namespace Hope\Util
         }
 
         /**
-         * Converts CamelCase string to snack_case
+         * Converts CamelCase string to snake_case
          *
          * @param string $string
          *
