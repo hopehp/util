@@ -2,6 +2,7 @@
 
 namespace Hope\Util
 {
+    use Hope\Core\Error;
 
     /**
      * Class File
@@ -112,11 +113,26 @@ namespace Hope\Util
          *
          * @param string $to [optional] Destination path
          *
+         * @throws \Hope\Core\Error
+         *
          * @return bool
          */
         public function save($to = null)
         {
+            if ($this->isUploaded()) {
+                if (false === is_string($to)) {
+                    throw new Error('For saving uploaded files needed destination path');
+                }
+                $result = move_uploaded_file($this->getPath(), $to);
+            } else {
+                $result = file_put_contents($to ? : $this->getPath(), $this->_data);
+            }
 
+            if ($result && $to) {
+                $this->setPath($to);
+            }
+
+            return $result;
         }
 
         /**
@@ -228,8 +244,9 @@ namespace Hope\Util
         public function getMime($check = false)
         {
             if ($this->_mime === null) {
-                // TODO : Add checking by content
-                $this->_mime = Mime::getMime($this->_ext);
+                $this->_mime = $check
+                    ? Mime::detect($this->getData())
+                    : Mime::getMime($this->_ext);
             }
             return $this->_mime;
         }

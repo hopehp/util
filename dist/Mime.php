@@ -102,6 +102,25 @@ namespace Hope\Util
             return null;
         }
 
+        /**
+         * Detect file content mime type
+         *
+         * @param File|string $file
+         *
+         * @return bool|string
+         */
+        public static function detect($file)
+        {
+            if ($file instanceof File) {
+                $file = $file->getPath();
+            }
+            if (file_exists($file) && is_file($file)) {
+                return mime_content_type($file);
+            }
+
+            return false;
+        }
+
     }
 
 }
