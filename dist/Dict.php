@@ -190,14 +190,15 @@ namespace Hope\Util
          * Remove item from map by key value if exists
          *
          * @param mixed $name
+         * @param bool  $throw [optional]
          *
          * @return \Hope\Util\Dict
          */
-        public function remove($name)
+        public function remove($name, $throw = true)
         {
             if (isset($this->_items[$name])) {
                 unset($this->_items[$name]);
-            } else {
+            } else if ($throw) {
                 throw new \InvalidArgumentException('The map has no key named "' . $name . '"');
             }
             return $this;
