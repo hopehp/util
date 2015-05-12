@@ -131,6 +131,78 @@ namespace Hope\Util\Date
         }
 
         /**
+         * Intervals equal
+         *
+         * @param \Hope\Util\Date\Interval $interval
+         *
+         * @return bool
+         */
+        public function eq(Interval $interval)
+        {
+            return $this == $interval;
+        }
+
+        /**
+         * Intervals not equal
+         *
+         * @param \Hope\Util\Date\Interval $interval
+         *
+         * @return bool
+         */
+        public function neq(Interval $interval)
+        {
+            return $this != $interval;
+        }
+
+        /**
+         * Current interval greatest
+         *
+         * @param \Hope\Util\Date\Interval $interval
+         *
+         * @return bool
+         */
+        public function gt(Interval $interval)
+        {
+            return $this > $interval;
+        }
+
+        /**
+         * Current interval greatest or equal
+         *
+         * @param \Hope\Util\Date\Interval $interval
+         *
+         * @return bool
+         */
+        public function gte(Interval $interval)
+        {
+            return $this >= $interval;
+        }
+
+        /**
+         * Current interval less
+         *
+         * @param \Hope\Util\Date\Interval $interval
+         *
+         * @return bool
+         */
+        public function lt(Interval $interval)
+        {
+            return $this < $interval;
+        }
+
+        /**
+         * Current interval less or equal
+         *
+         * @param \Hope\Util\Date\Interval $interval
+         *
+         * @return bool
+         */
+        public function lte(Interval $interval)
+        {
+            return $this <= $interval;
+        }
+
+        /**
          * Create new Interval instance
          *
          * @return \Hope\Util\Date\Interval
