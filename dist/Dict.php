@@ -2,7 +2,10 @@
 
 namespace Hope\Util
 {
+
     use Countable;
+    use ArrayAccess;
+
     use Hope\Core\Error;
 
     /**
@@ -10,7 +13,7 @@ namespace Hope\Util
      *
      * @package Hope\Util
      */
-    class Dict implements Countable, \ArrayAccess
+    class Dict implements Countable, ArrayAccess
     {
 
         /**
@@ -144,13 +147,16 @@ namespace Hope\Util
         /**
          * Each map values
          *
-         * @return \Generator
+         * @param callable $handler
+         *
+         * @return \Hope\Util\Dict
          */
-        public function each()
+        public function each(callable $handler)
         {
-            foreach($this->all() as $item) {
-                yield $item;
+            foreach($this->all() as $key => $value) {
+                call_user_func($handler, $key, $value);
             }
+            return $this;
         }
 
         /**
