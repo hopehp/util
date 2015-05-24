@@ -2,6 +2,7 @@
 
 namespace Hope\Util
 {
+
     use Hope\Core\Error;
 
     /**
@@ -136,6 +137,38 @@ namespace Hope\Util
         }
 
         /**
+         * Set file name
+         *
+         * @param string $name
+         *
+         * @return \Hope\Util\File
+         */
+        public function setName($name)
+        {
+            if ($info = pathinfo($name)) {
+                // TODO : Validate empty file name?
+                $this->_name = $info['filename'];
+
+                // Set file extension
+                if (isset($info['extension'])) {
+                    $this->_ext = $info['extension'];
+                }
+            }
+
+            return $this;
+        }
+
+        /**
+         * Returns file name
+         *
+         * @return string
+         */
+        public function getName()
+        {
+            return $this->_name;
+        }
+
+        /**
          * Set new file path
          *
          * @param string $path
@@ -145,11 +178,9 @@ namespace Hope\Util
         public function setPath($path)
         {
             $this->_path = $path;
-            // Detect information
-            if ($info = pathinfo($path)) {
-                $this->_name = $info['filename'];
-                $this->_ext = $info['extension'];
-            }
+
+            // Detect name and extension from path
+            $this->setName($path);
 
             return $this;
         }

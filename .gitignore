@@ -6,3 +6,6 @@ vendor/
 # composer.lock
 
 tests/_output/*
+
+# Exclude simple tests file
+test*.php
