@@ -31,8 +31,6 @@
 namespace Hope\Util
 {
 
-    use Hope\Core\Error;
-
     /**
      * Class Enum
      *
@@ -64,7 +62,7 @@ namespace Hope\Util
         /**
          * @param $name
          *
-         * @throws \Hope\Core\Error
+         * @throws \RuntimeException
          *
          * @return \Hope\Util\Enum
          */
@@ -76,7 +74,7 @@ namespace Hope\Util
                 return static::get($constants[$name]);
             }
 
-            throw new Error(['No constant or method %s in class %s', $name, get_called_class()]);
+            throw new \RuntimeException(['No constant or method %s in class %s', $name, get_called_class()]);
         }
 
         /**
@@ -154,7 +152,7 @@ namespace Hope\Util
         /**
          * Returns enumerator name
          *
-         * @return mixed
+         * @return string
          */
         final public function getName()
         {
@@ -226,7 +224,7 @@ namespace Hope\Util
          * @param string $name
          * @param array  $arguments
          *
-         * @throws \Hope\Core\Error
+         * @throws \RuntimeException
          *
          * @return \Hope\Util\Enum
          */

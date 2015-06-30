@@ -31,8 +31,6 @@
 namespace Hope\Util
 {
 
-    use Hope\Core\Error;
-
     /**
      * Class Path
      *
@@ -86,17 +84,17 @@ namespace Hope\Util
          * @param string $name Link name
          * @param string $path Link path
          *
-         * @throws \Hope\Core\Error
+         * @throws \InvalidArgumentException
          *
          * @return \Hope\Util\Path
          */
         public function addLink($name, $path)
         {
             if (false === is_string($name)) {
-                throw new Error('Path link name must be a string');
+                throw new \InvalidArgumentException('Path link name must be a string');
             }
             if (false === is_string($path)) {
-                throw new Error('Path must be a string');
+                throw new \InvalidArgumentException('Path must be a string');
             }
             $this->_links[$name] = $path;
 
@@ -109,17 +107,17 @@ namespace Hope\Util
          * @param string $name Marker name
          * @param string $data Marker value
          *
-         * @throws \Hope\Core\Error
+         * @throws \InvalidArgumentException
          *
          * @return \Hope\Util\Path
          */
         public function addMarker($name, $data)
         {
             if (false === is_string($name)) {
-                throw new Error('Path marker must be a string');
+                throw new \InvalidArgumentException('Path marker must be a string');
             }
             if (false === is_string($data)) {
-                throw new Error('Data must be a string');
+                throw new \InvalidArgumentException('Data must be a string');
             }
             $this->_marks[$name] = $data;
 
@@ -157,7 +155,7 @@ namespace Hope\Util
                 }
             }
 
-            return join(DIRECTORY_SEPARATOR, $result);
+            return implode(DIRECTORY_SEPARATOR, $result);
         }
 
         /**
@@ -165,7 +163,7 @@ namespace Hope\Util
          *
          * @param string $path
          *
-         * @throws \Hope\Core\Error
+         * @throws \InvalidArgumentException
          *
          * @return bool|string
          */
@@ -184,14 +182,14 @@ namespace Hope\Util
          *
          * @param string $path Path pattern
          *
-         * @throws \Hope\Core\Error
+         * @throws \InvalidArgumentException
          *
          * @return string
          */
         public function replace($path)
         {
             if (false === is_string($path)) {
-                throw new Error('Path must be a string');
+                throw new \InvalidArgumentException('Path must be a string');
             }
 
             $path = preg_replace_callback('|^@([\w]+)|', function($v) {
@@ -211,7 +209,7 @@ namespace Hope\Util
         public function join(...$path)
         {
             return $this->normalize(
-                join(DIRECTORY_SEPARATOR, $path)
+                implode(DIRECTORY_SEPARATOR, $path)
             );
         }
 
@@ -225,7 +223,7 @@ namespace Hope\Util
         public function make(...$path)
         {
             $path = $this->normalize(
-                join(DIRECTORY_SEPARATOR, $path)
+                implode(DIRECTORY_SEPARATOR, $path)
             );
 
             if (false === file_exists($path)) {

@@ -31,8 +31,6 @@
 namespace Hope\Util
 {
 
-    use Hope\Core\Error;
-
     /**
      * Class File
      *
@@ -142,7 +140,7 @@ namespace Hope\Util
          *
          * @param string $to [optional] Destination path
          *
-         * @throws \Hope\Core\Error
+         * @throws \RuntimeException
          *
          * @return bool
          */
@@ -150,7 +148,7 @@ namespace Hope\Util
         {
             if ($this->isUploaded()) {
                 if (false === is_string($to)) {
-                    throw new Error('For saving uploaded files needed destination path');
+                    throw new \RuntimeException('For saving uploaded files needed destination path');
                 }
                 $result = move_uploaded_file($this->getPath(), $to);
             } else {

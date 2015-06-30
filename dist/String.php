@@ -31,8 +31,6 @@
 namespace Hope\Util
 {
 
-    use Hope\Core\Error;
-
     /**
      * Class String
      *
@@ -53,12 +51,12 @@ namespace Hope\Util
          *
          * @param string $value
          *
-         * @throws \Hope\Core\Error
+         * @throws \InvalidArgumentException
          */
         function __construct($value)
         {
             if (false === is_string((string) $value)) {
-                throw new Error(['Value must be a string, %s given', gettype($value)]);
+                throw new \InvalidArgumentException(['Value must be a string, %s given', gettype($value)]);
             }
             $this->_value = (string) $value;
         }
@@ -68,7 +66,7 @@ namespace Hope\Util
          *
          * @return string
          */
-        function __toString()
+        public function __toString()
         {
             return $this->_value;
         }
@@ -342,14 +340,14 @@ namespace Hope\Util
          *
          * @param string $algo Algorithm name
          *
-         * @throws \Hope\Core\Error
+         * @throws \RuntimeException
          *
          * @return \Hope\Util\String
          */
         public function hash($algo)
         {
             if (false === in_array($algo, hash_algos())) {
-                throw new Error(['Hash algorithm %s not available', $algo]);
+                throw new \RuntimeException(['Hash algorithm %s not available', $algo]);
             }
             return $this->setValue(hash($algo, $this->_value));
         }
@@ -357,7 +355,7 @@ namespace Hope\Util
         /**
          * Create hash from string using sha1 algorithm
          *
-         * @throws \Hope\Core\Error
+         * @throws \RuntimeException
          *
          * @return \Hope\Util\String
          */
@@ -369,7 +367,7 @@ namespace Hope\Util
         /**
          * Create hash from string using md5 algorithm
          *
-         * @throws \Hope\Core\Error
+         * @throws \RuntimeException
          *
          * @return \Hope\Util\String
          */

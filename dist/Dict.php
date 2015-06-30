@@ -34,8 +34,6 @@ namespace Hope\Util
     use Countable;
     use ArrayAccess;
 
-    use Hope\Core\Error;
-
     /**
      * Class Dict
      *
@@ -56,7 +54,7 @@ namespace Hope\Util
          *
          * @param array $values
          *
-         * @throws \Hope\Core\Error
+         * @throws \InvalidArgumentException
          */
         public function __construct(array $values = [])
         {
@@ -71,14 +69,14 @@ namespace Hope\Util
          * @param mixed $name
          * @param mixed $item
          *
-         * @throws \Hope\Core\Error
+         * @throws \InvalidArgumentException
          *
          * @return \Hope\Util\Dict
          */
         public function set($name, $item)
         {
             if (false === is_string($name) && false === is_object($name)) {
-                throw new Error('Dict key name must be a string or object');
+                throw new \InvalidArgumentException('Dict key name must be a string or object');
             }
             $this->_items[$name] = $item;
 
@@ -141,7 +139,7 @@ namespace Hope\Util
          *
          * @param \Hope\Util\Dict|array $values
          *
-         * @throws \Hope\Core\Error
+         * @throws \InvalidArgumentException
          *
          * @return \Hope\Util\Dict
          */
