@@ -139,7 +139,7 @@ namespace Hope\Util
          */
         public function isDouble()
         {
-            return is_double($this->_value);
+            return is_float($this->_value);
         }
 
         /**

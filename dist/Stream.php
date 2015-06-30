@@ -383,6 +383,18 @@ namespace Hope\Util
         }
 
         /**
+         * Returns stream name
+         *
+         * @param bool $local
+         *
+         * @return string
+         */
+        public function getName($local = true)
+        {
+            return stream_socket_get_name($this->resource, $local);
+        }
+
+        /**
          * Returns stream metadata
          *
          * @param string $name [optional]
