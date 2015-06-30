@@ -9,3 +9,5 @@ tests/_output/*
 
 # Exclude simple tests file
 test*.php
+
+.DS_STORE

@@ -48,7 +48,7 @@ namespace Hope\Util\Date
          * @param \Hope\Util\Date          $end
          * @param \Hope\Util\Date\Interval $interval
          */
-        function __construct(Date $start, Date $end, Interval $interval = null)
+        public function __construct(Date $start, Date $end, Interval $interval = null)
         {
             if ($interval) {
                 $this->setInterval($interval);
