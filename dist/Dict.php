@@ -87,17 +87,14 @@ namespace Hope\Util
         /**
          * Returns map value
          *
-         * @param mixed $name
-         * @param bool  $default [optional] Default value that returned if key not existing
+         * @param string|callable $name
+         * @param mixed           $default [optional] Default value that returned if key not existing
          *
          * @return bool|mixed
          */
         public function get($name, $default = false)
         {
-            if (isset($this->_items[$name])) {
-                return $this->_items[$name];
-            }
-            return $default;
+            return _get($this->_items, $name, $default);
         }
 
         /**
@@ -162,12 +159,13 @@ namespace Hope\Util
          * Find key name by value
          *
          * @param mixed $value
+         * @param bool  $strict
          *
          * @return mixed
          */
-        public function find($value)
+        public function find($value, $strict = true)
         {
-            return array_search($value, $this->_items);
+            return array_search($value, $this->_items, $strict);
         }
 
         /**
@@ -209,13 +207,13 @@ namespace Hope\Util
         /**
          * Check if key exists
          *
-         * @param mixed $name
+         * @param string $name
          *
          * @return bool
          */
         public function exists($name)
         {
-            return isset($this->_items[$name]);
+            return _exists($this->_items, $name);
         }
 
         /**
@@ -223,6 +221,8 @@ namespace Hope\Util
          *
          * @param mixed $name
          * @param bool  $throw [optional]
+         *
+         * @throws \InvalidArgumentException
          *
          * @return \Hope\Util\Dict
          */
