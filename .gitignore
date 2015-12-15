@@ -11,3 +11,5 @@ tests/_output/*
 test*.php
 
 .DS_STORE
+
+temp/

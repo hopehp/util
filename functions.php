@@ -11,8 +11,16 @@
  */
 function _get($array, $key, $default = null)
 {
-    if (array_key_exists($key, $array)) {
+    if (is_string($key) && array_key_exists($key, $array)) {
         return $array[$key];
+    } else if (is_callable($key)) {
+        $value = _value($key, [$array, null]);
+
+        if ($value !== null) {
+            return $value;
+        }
+    } else {
+        return _chain($array, $key, $default);
     }
     return _value($default, [$array, $key]);
 }
@@ -21,20 +29,20 @@ function _get($array, $key, $default = null)
  * Check existing key in source array
  *
  * @param array  $array
- * @param string $key
+ * @param string $index
  *
  * @return bool
  */
-function _exists(array $array, $key)
+function _exists(array $array, $index)
 {
-    $pos = strrpos($key, '.');
+    $pos = strrpos($index, '.');
 
-    if ($pos !== false) {
-        $key = substr($key, $pos + 1);
-        $array = _chain($array, substr($key, 0, $pos));
+    if ($pos !== false && false === array_key_exists($index, $array)) {
+        $array = _chain($array, substr($index, 0, $pos));
+        $index = substr($index, $pos + 1);
     }
 
-    return is_array($array) && array_key_exists($key, $array);
+    return is_array($array) && array_key_exists($index, $array);
 }
 
 /**
