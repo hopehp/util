@@ -37,18 +37,69 @@ namespace Hope\Util\Date
      * Class Interval
      *
      * @package Hope\Util\Date
+     * @property-read int $minutes Interval minutes
+     * @property-read int $months Interval months
+     * @property-read int $seconds Interval seconds
+     * @property-read int $years Interval years
+     * @property-read int $hours Interval hours
      */
     class Interval extends DateInterval
     {
+
+        /**
+         * @var array
+         */
+        public static $aliases = [
+            'months' => 'm',
+            'hours' => 'h',
+            'years' => 'y',
+            'minutes' => 'i',
+            'seconds' => 's',
+        ];
+
+
+        /**
+         * @var DateInterval
+         */
+        protected $_original;
 
         /**
          * @param string $interval
          */
         public function __construct($interval = null)
         {
-            if ($interval) {
-                parent::__construct($interval);
+            if ($interval instanceof DateInterval) {
+                $this->_original = $interval;
+            } elseif ($interval !== null) {
+                if (preg_match('/\s+/', $interval)) {
+                    $this->_original = DateInterval::createFromDateString($interval);
+                } else {
+                    $this->_original = new DateInterval($interval);
+                }
+            } else {
+                $this->_original = new DateInterval('P0Y0M0DT0H0M0S');
             }
+        }
+
+
+        /**
+         * Returns interval parts by aliases
+         *
+         * @param string $alias
+         *
+         * @return mixed
+         */
+        public function __get($alias)
+        {
+            if (isset(static::$aliases[$alias])) {
+                return $this->_original->{static::$aliases[$alias]};
+            }
+            return $this->_original->{$alias};
+        }
+
+        public function __set($name, $value)
+        {
+            $this->_original->{$name} = $value;
         }
 
         /**
@@ -66,11 +117,11 @@ namespace Hope\Util\Date
          *
          * @param int $y
          *
-         * @return Interval
+         * @return \Hope\Util\Date\Interval
          */
         public function addYear($y)
         {
-            $this->y += (int) $y;
+            $this->_original->y += (int) $y;
 
             return $this;
         }
@@ -80,11 +131,11 @@ namespace Hope\Util\Date
          *
          * @param int $m
          *
-         * @return Interval
+         * @return \Hope\Util\Date\Interval
          */
         public function addMonth($m)
         {
-            $this->m += (int) $m;
+            $this->_original->m += (int) $m;
 
             return $this;
         }
@@ -94,11 +145,11 @@ namespace Hope\Util\Date
          *
          * @param int $w
          *
-         * @return Interval
+         * @return \Hope\Util\Date\Interval
          */
         public function addWeek($w)
         {
-            $this->d += (int) $w * 7;
+            $this->_original->d += (int) $w * 7;
 
             return $this;
         }
@@ -110,8 +161,9 @@ namespace Hope\Util\Date
          *
          * @return \Hope\Util\Date\Interval
          */
-        public function addDay($d = 1){
-            $this->d += (int) $d;
+        public function addDay($d = 1)
+        {
+            $this->_original->d += (int) $d;
 
             return $this;
         }
@@ -125,7 +177,7 @@ namespace Hope\Util\Date
          */
         public function addHour($h)
         {
-            $this->h += (int) $h;
+            $this->_original->h += (int) $h;
 
             return $this;
         }
@@ -139,7 +191,7 @@ namespace Hope\Util\Date
          */
         public function addMinute($m)
         {
-            $this->i += (int) $m;
+            $this->_original->i += (int) $m;
 
             return $this;
         }
@@ -153,8 +205,34 @@ namespace Hope\Util\Date
          */
         public function addSecond($s)
         {
-            $this->s += (int) $s;
+            $this->_original->s += (int) $s;
 
+            return $this;
+        }
+
+        /**
+         * Returns true if interval is negative
+         *
+         * @return bool
+         */
+        public function isInverted()
+        {
+            return (bool) $this->_original->invert;
+        }
+
+        public function getOriginal()
+        {
+            return $this->_original;
+        }
+
+        /**
+         * Reverse interval
+         *
+         * @return \Hope\Util\Date\Interval
+         */
+        public function reverse()
+        {
+            $this->_original->invert = (int) !$this->_original->invert;
             return $this;
         }
 
@@ -249,16 +327,30 @@ namespace Hope\Util\Date
          */
         public static function wrap(DateInterval $di)
         {
-            $interval = new static();
-            $interval->invert = $di->invert;
-            $interval->days = $di->days;
-            $interval->y = $di->y;
-            $interval->m = $di->m;
-            $interval->d = $di->d;
-            $interval->h = $di->h;
-            $interval->i = $di->i;
-            $interval->s = $di->s;
+            if ($di instanceof Interval) {
+                return $di;
+            }
+            return new static($di);
 
+//            var_dump($di); die;
+//            $interval->invert = $di->invert;
+//            $interval->days = $di->days;
+////            foreach ( as $item) {
+////
+////            }
+//
+////            $interval->invert = $di->invert;
+////            $interval->addDay($di->days);
+////            var_dump($interval->days, $di->days);die;
+////            $interval->days = $di->days;
+////            $interval->y = $di->y;
+////            $interval->m = $di->m;
+////            $interval->d = $di->d;
+////            $interval->h = $di->h;
+////            $interval->i = $di->i;
+////            $interval->s = $di->s;
+//
+////            var_dump($interval);
             return $interval;
         }
 

@@ -115,7 +115,7 @@ namespace Hope\Util
         public function add($interval)
         {
             if ($interval instanceof \DateInterval) {
-                parent::add($interval);
+                parent::add($interval instanceof Interval ? $interval->getOriginal() : $interval);
             } else if (is_integer($interval)) {
                 $this->setTimestamp($this->getTimestamp() + $interval);
             }
@@ -133,7 +133,7 @@ namespace Hope\Util
         public function sub($interval)
         {
             if ($interval instanceof \DateInterval) {
-                parent::sub($interval);
+                parent::sub($interval instanceof Interval ? $interval->getOriginal() : $interval);
             } else if (is_integer($interval)) {
                 $this->setTimestamp($this->getTimestamp() - $interval);
             }
@@ -151,13 +151,13 @@ namespace Hope\Util
          */
         public function diff($datetime2, $absolute = false)
         {
-            $period = parent::diff($datetime2, $absolute);
+            $interval = parent::diff($datetime2, $absolute);
 
-            if ($period) {
-                $period = Interval::wrap($period);
+            if ($interval) {
+                $interval = Interval::wrap($interval);
             }
 
-            return $period;
+            return $interval;
         }
 
         /**
@@ -167,7 +167,7 @@ namespace Hope\Util
          */
         public function copy()
         {
-            return new static($this->getTimestamp());
+            return (new Date())->setTimestamp($this->getTimestamp());
         }
 
         /**
