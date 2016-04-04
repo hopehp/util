@@ -33,8 +33,9 @@ namespace Hope\Util
 
     use DateTime;
     use DateTimeZone;
-    use Hope\Util\Date\Interval;
+    use Hope\Util\Date\Parts;
     use Hope\Util\Date\Period;
+    use Hope\Util\Date\Interval;
 
     /**
      * Class Date
@@ -47,23 +48,23 @@ namespace Hope\Util
         /**
          * The month constants
          */
-        const JANUARY   = 0;
-        const FEBRUARY  = 1;
-        const MARCH     = 2;
-        const APRIL     = 3;
-        const MAY       = 4;
-        const JUNE      = 5;
-        const JULE      = 6;
-        const AUGUST    = 7;
-        const SEPTEMBER = 8;
-        const OCTOBER   = 9;
-        const NOVEMBER  = 10;
-        const DECEMBER  = 11;
+        const JANUARY   = 1;
+        const FEBRUARY  = 2;
+        const MARCH     = 3;
+        const APRIL     = 4;
+        const MAY       = 5;
+        const JUNE      = 6;
+        const JULE      = 7;
+        const AUGUST    = 8;
+        const SEPTEMBER = 9;
+        const OCTOBER   = 10;
+        const NOVEMBER  = 11;
+        const DECEMBER  = 12;
 
         /**
          * The day constants
          */
-        const SUNDAY    = 0;
+        const SUNDAY    = 7;
         const MONDAY    = 1;
         const TUESDAY   = 2;
         const WEDNESDAY = 3;
@@ -79,6 +80,7 @@ namespace Hope\Util
         const HOUR      = 3600;
         const MINUTE    = 60;
 
+        
         /**
          * Create Date instance
          *
@@ -265,6 +267,107 @@ namespace Hope\Util
             return $this->between($period->getStart(), $period->getEnd());
         }
 
+
+        public function setYear($number)
+        {
+            return $this->setDate((int) $number, $this->getMonth(), $this->getDay());
+        }
+
+
+        /**
+         * Returns hours
+         *
+         * @return int
+         */
+        public function getHours()
+        {
+            return $this->get('hours');
+        }
+        
+        
+        /**
+         * Returns month day number start with 1
+         *
+         * @return int
+         */
+        public function getDay()
+        {
+            return (int) $this->format('j');
+        }
+
+        /**
+         * Returns week number in year
+         *
+         * @return int
+         */
+        public function getWeek()
+        {
+            return (int) $this->format('W');
+        }
+
+        public function getMonth()
+        {
+            return (int) $this->format('n');
+        }
+
+        /**
+         * Returns day of week
+         *
+         * @return int
+         */
+        public function getWeekDay()
+        {
+            return (int) $this->format('N');
+        }
+
+        /**
+         * Returns year number
+         *
+         * @return int
+         */
+        public function getYear()
+        {
+            // TODO: Check ISO-8601 standard
+            return (int) $this->format('Y');
+        }
+
+        /**
+         * Returns day of year starts with 1 to 366
+         *
+         * @return int
+         */
+        public function getYearDay()
+        {
+            return (int) $this->format('z') + 1;
+        }
+
+        /**
+         * Returns true if year is leap
+         *
+         * @return bool
+         */
+        public function isLeapYear()
+        {
+            return (bool) $this->format('L');
+        }
+
+        /**
+         * Get date part
+         *
+         * @param string $part
+         *
+         * @throws \InvalidArgumentException
+         *
+         * @return int
+         */
+        public function get($part)
+        {
+            if (isset(Parts::$parts[$part])) {
+                return (int) $this->format(Parts::$parts[$part]);
+            }
+            throw new \InvalidArgumentException('Undefined date time part ' . $part);
+        }
+
         /**
          * Create new instance Date with `now` time
          *
@@ -274,6 +377,7 @@ namespace Hope\Util
         {
             return new Date('now');
         }
+
 
     }
 
